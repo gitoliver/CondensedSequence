@@ -1,7 +1,7 @@
 #include <string>
 #include <algorithm> // Reverse function.
 //s#include "../../../GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/utils.hpp"
-#include "sequenceparser.hpp"
+#include "sequenceParser.hpp"
 #include <Graph.hpp> // For Print.
 
 using CondensedSequence::SequenceParser;

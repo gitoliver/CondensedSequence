@@ -10,7 +10,6 @@ namespace CondensedSequence
     class SequenceParser
     {
     public:
-    //enum class Reordering_Approach {PRESERVE_USER_INPUT, LOWEST_INDEX, LONGEST_CHAIN};
         //////////////////////////////////////////////////////////
         //                       CONSTRUCTOR                    //
         //////////////////////////////////////////////////////////
@@ -19,14 +18,10 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
-        //inline Residue* GetCurrentParentResidue()  {return daddyNow_;}
         std::string Print();
         //////////////////////////////////////////////////////////
         //                       MUTATOR                        //
         //////////////////////////////////////////////////////////
-       // inline void AddConnection(Residue* otherRes) {};
-        //inline void SetCurrentParentResidue(Residue* parent) {daddyNow_ = parent;}
-
     private:
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
