@@ -36,7 +36,6 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                       MUTATOR                        //
         //////////////////////////////////////////////////////////
-        void SetInput(std::string sequence);
         std::vector<std::string> ExtractDerivatives();
         //////////////////////////////////////////////////////////
         //                       FUNCTIONS                      //
@@ -49,11 +48,7 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                 PRIVATE MEMBERS                      //
         //////////////////////////////////////////////////////////
-    	std::string inputSequence_;
-        std::vector<std::string> savedDerivatives_;
-        size_t currentIndex_;
-        size_t windowStart_;
-        size_t windowEnd_;
+    	std::vector<std::string> savedDerivatives_;
         std::vector<std::shared_ptr<Residue>> residues_;
     };
 }

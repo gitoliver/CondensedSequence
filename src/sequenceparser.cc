@@ -10,7 +10,6 @@ using CondensedSequence::Residue;
 SequenceParser::SequenceParser (std::string inputSequence)
 {
 	std::cout << "Yo\n";
-	this->SetInput(inputSequence);
 	if (inputSequence.find(';') != std::string::npos)
 	{
 		std::cout << "Found labels in input\n";
@@ -38,12 +37,6 @@ std::vector<Residue*> SequenceParser::GetResidues()
         rawResidues.push_back(residue.get());
     }
     return rawResidues;
-}
-
-
-void SequenceParser::SetInput(std::string sequence)
-{
-	inputSequence_ = sequence;
 }
 
 void SequenceParser::TokenizeLabelledInput(std::string inString)
