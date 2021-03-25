@@ -20,12 +20,34 @@ void Residue::AddLinkage(Residue* otherRes)
    // std::cout << "Is it getting destroyed now?\n";
 }
 
+char Residue::GetLink()
+{
+    switch (this->GetType())
+    {
+        case (Type::Sugar):
+            return this->GetLinkageLabel().back();
+        case (Type::Derivative):
+            return this->GetLinkageLabel().front();
+        case (Type::Terminal):
+            return '0';
+        default:
+            return '0';
+    }
+}
+
+std::vector<Residue*> Residue::GetChildren()
+{
+    return this->GetNode()->GetIncomingNeighborObjects();
+}
+
+
 void Residue::ParseResidueStringIntoComponents(std::string residueString)
 {
-	std::cout << "PARSING RESIDUE: " << residueString << std::endl;
+	//std::cout << "PARSING RESIDUE: " << residueString << std::endl;
 	if (residueString.find('-') != std::string::npos)
     { // E.g. DManpNAca1-4. Isomer (D or L), residueName (ManNAc), ring type (f or p), configuration (a or b), linkage (1-4)
     	// Reading from front.
+        this->SetType(Type::Sugar);
     	this->SetIsomer(residueString[0]);
     	this->SetResidueName(residueString.substr(1, 3));
     	this->SetRingType(residueString[4]);
@@ -42,16 +64,18 @@ void Residue::ParseResidueStringIntoComponents(std::string residueString)
     }
     else if (isdigit(residueString[0]))
     { // A derivative e.g. 3S, 6Me. Linkage followed by residue name. No configuration.
-    	std::cout << "Blah " << residueString[0] << ".\n";
+        this->SetType(Type::Derivative);
+    	//std::cout << "Assumed derivative " << residueString[0] << ".\n";
     	std::string linkage(1,residueString[0]);
     	this->SetLinkageLabel(linkage);
     	this->SetResidueName(residueString.substr(1)); // From position 1 to the end.
     }
     else
     { // A terminal
+        this->SetType(Type::Terminal);
     	this->SetResidueName(residueString);
     }
-    this->Print();
+    //this->Print();
 }
 
 void Residue::Print()

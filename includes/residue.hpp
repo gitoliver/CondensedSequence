@@ -10,10 +10,11 @@ namespace CondensedSequence
 	class Residue
 	{
 	public:
+        enum Type {Terminal, Sugar, Derivative};
         //////////////////////////////////////////////////////////
         //                       CONSTRUCTOR                    //
         //////////////////////////////////////////////////////////
-        Residue(std::string residueString) ;
+        Residue(std::string residueString);
         Residue(std::string residueString, Residue* neighbor);
         //~Residue() {std::cout << "Residue destroyed\n";}
         //////////////////////////////////////////////////////////
@@ -28,11 +29,20 @@ namespace CondensedSequence
         inline std::string GetSpecialModifier() {return specialModifier_;}
         inline char GetConfiguration() {return configuration_;}
         inline std::string GetLinkageLabel() {return linkageLabel_;}
+        inline Residue::Type GetType() {return type_;}
         //////////////////////////////////////////////////////////
         //                       MUTATOR                        //
         //////////////////////////////////////////////////////////
     	void AddLinkage(Residue* otherRes);
+        //////////////////////////////////////////////////////////
+        //                       FUNCTIONS                      //
+        //////////////////////////////////////////////////////////
+        char GetLink();
+        std::vector<Residue*> GetChildren();
 	private:
+        //////////////////////////////////////////////////////////
+        //                       ACCESSOR                       //
+        //////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
@@ -47,9 +57,11 @@ namespace CondensedSequence
         inline void SetSpecialModifier(std::string modifier) {specialModifier_ = modifier;}
         inline void SetConfiguration(char config) {configuration_ = config;}
         inline void SetLinkageLabel(std::string label) {linkageLabel_ = label;}
+        inline void SetType(Residue::Type type) {type_ = type;}
         //////////////////////////////////////////////////////////
         //                       ATTRRIBUTES                    //
         //////////////////////////////////////////////////////////
+        Residue::Type type_;                 //         enum Type {Terminal, Sugar, Derivative};
 		std::string fullResidueString_;           // DManpNAca1-4.
 		char isomer_;                      // D or L
         std::string residueName_;                 // Man, Neu, Ido etc
