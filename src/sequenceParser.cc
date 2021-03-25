@@ -24,12 +24,12 @@ SequenceParser::SequenceParser (std::string inputSequence)
 
 std::string SequenceParser::Print()
 {
-    TemplateGraph::Graph<Residue> sequenceGraph(this->GetResidues().at(0)->GetNode());
+    TemplateGraph::Graph<Residue> sequenceGraph(this->GetParsedResidues().at(0)->GetNode());
     return sequenceGraph.Print();
 }
 
 
-std::vector<Residue*> SequenceParser::GetResidues()
+std::vector<Residue*> SequenceParser::GetParsedResidues()
 {
     std::vector<Residue*> rawResidues;
     for(auto &residue : residues_)
@@ -81,7 +81,10 @@ void SequenceParser::RecurveParse(size_t &i, const std::string sequence, Residue
         if ( sequence[i] == '-' )
         {
             if (branchStart)
+            {
                 branchStart = false;
+                std::cout << "branchStart is false\n";
+            }
             else
             {
                 parent = this->SaveResidue(i + 2, windowEnd, sequence, parent);
@@ -95,7 +98,19 @@ void SequenceParser::RecurveParse(size_t &i, const std::string sequence, Residue
         }
         else if ( sequence[i] == ']' )
         {
-            this->RecurveParse(i, sequence, parent);
+            if ((windowEnd - i) > 7) 
+            {   // if not a derivative, save
+                std::cout << "WE:" << windowEnd << " i:" << i << std::endl;
+                parent = this->SaveResidue(i + 1, windowEnd, sequence, parent);
+                this->RecurveParse(i, sequence, parent);
+                windowEnd = i;
+                branchStart = true; // reset this when you fall out a level
+                std::cout << "branchStart is true again\n";
+            }
+            else // Derivative
+            {   
+                this->RecurveParse(i, sequence, parent);
+            }
         }
         else if ( sequence[i] == ',' )
         {
@@ -141,7 +156,7 @@ Residue* SequenceParser::SaveResidue(const size_t windowStart, const size_t wind
     }
     else // A derivatve. The parent residue doesn't exist yet, so save it.
     {
-        std::cout << "Temporarily holding derivative: " << residueString << "\n";
+        //std::cout << "Temporarily holding derivative: " << residueString << "\n";
         this->SaveDerivative(residueString);
         return parent;
     }
