@@ -1,17 +1,17 @@
-#ifndef CONDENSED_SEQUENCE_HPP
-#define CONDENSED_SEQUENCE_HPP
+#ifndef SEQUENCE_MANAGER_HPP
+#define SEQUENCE_MANAGER_HPP
 
 #include "sequenceParser.hpp"
 
 namespace CondensedSequence
 {
-    class CondensedSequence : public SequenceParser
+    class SequenceManager : public SequenceParser
     {
     public:
         //////////////////////////////////////////////////////////
         //                       CONSTRUCTOR                    //
         //////////////////////////////////////////////////////////
-        CondensedSequence(std::string inputSequence) : SequenceParser{inputSequence} {};
+        SequenceManager(std::string inputSequence) : SequenceParser{inputSequence} {parsedResidues_ = this->GetParsedResidues();}
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
@@ -21,7 +21,7 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
-        // void reorderSequence();
+        void reorderSequence();
         // void labelSequence();
     private:
         //////////////////////////////////////////////////////////
@@ -36,6 +36,7 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                 PRIVATE MEMBERS                      //
         //////////////////////////////////////////////////////////
+        std::vector<Residue*> parsedResidues_;
     };
 }
 #endif
