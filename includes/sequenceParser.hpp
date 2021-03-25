@@ -44,7 +44,7 @@ namespace CondensedSequence
         //                 PRIVATE MEMBERS                      //
         //////////////////////////////////////////////////////////
     	std::vector<std::string> savedDerivatives_;
-        std::vector<std::shared_ptr<Residue>> residues_;
+        std::vector<std::unique_ptr<Residue>> residues_;
     };
 }
 #endif

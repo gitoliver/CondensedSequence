@@ -61,12 +61,13 @@ bool SequenceParser::ParseCondensedSequence(const std::string sequence)
 	size_t last_dash_index = sequence.find_last_of('-');
 	std::string terminal_residue = sequence.substr((last_dash_index + 1)); // From last dash to end.
     std::cout << "Terminal is: " << terminal_residue << "\n";
-    auto terminal = residues_.emplace_back(std::make_shared<Residue>(terminal_residue));
+    residues_.push_back(std::make_unique<Residue>(terminal_residue));
+    auto terminal = residues_.back().get();
     //this->SetCurrentParentResidue(residues_.back());
     //std::cout << "And that was: " << this->GetCurrentParentResidue()->GetName() << std::endl;
     //std::cout << "And that was: " << terminal->GetName() << std::endl;
     size_t i = (last_dash_index + 1);        
-    this->RecurveParse(i, sequence, terminal.get()); 
+    this->RecurveParse(i, sequence, terminal); 
     return true;
 }
 
@@ -126,16 +127,17 @@ Residue* SequenceParser::SaveResidue(const size_t windowStart, const size_t wind
     if (residueString.find('-') != std::string::npos)
     {
         std::cout << "Saving " << residueString << " with parent " << parent->GetName() <<  std::endl;
-        auto newRes = residues_.emplace_back(std::make_shared<Residue>(residueString, parent));
+        residues_.push_back(std::make_unique<Residue>(residueString, parent));
+        auto newRes = residues_.back().get();
         if(this->DerivativesExist())
         {
             for(auto &derivative : this->ExtractDerivatives())
             {
                 std::cout << "Saving " << derivative << " with parent " << newRes->GetName() <<  std::endl;
-                residues_.emplace_back(std::make_shared<Residue>(derivative, newRes.get()));
+                residues_.push_back(std::make_unique<Residue>(derivative, newRes));
             }
         }
-        return newRes.get();
+        return newRes;
     }
     else // A derivatve. The parent residue doesn't exist yet, so save it.
     {
