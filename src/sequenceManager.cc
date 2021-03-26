@@ -1,6 +1,7 @@
 #include "sequenceManager.hpp"
 
 using CondensedSequence::SequenceManager;
+using CondensedSequence::Residue;
 
 void SequenceManager::reorderSequence()
 {
@@ -8,9 +9,10 @@ void SequenceManager::reorderSequence()
 	for (auto &residue : this->GetParsedResidues())
 	{
 		std::cout << "Links for " << residue->GetName() << ":\n";
+		residue->GetNode()->SortInEdgesBySourceTObjectComparator();
 		for (auto &neighbor : residue->GetChildren())
 		{
-			std::cout << neighbor->GetName() << ",";
+			std::cout << neighbor->GetLink() << ",";
 		}
 		std::cout << "\n";
 	}

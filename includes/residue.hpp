@@ -39,6 +39,13 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         char GetLink();
         std::vector<Residue*> GetChildren();
+        //////////////////////////////////////////////////////////
+        //                  OPERATOR OVERLOADING                //
+        //////////////////////////////////////////////////////////
+        bool operator== ( Residue& rhs)  { return (this->GetLink() == rhs.GetLink());}
+        bool operator!= ( Residue& rhs)  { return (this->GetLink() != rhs.GetLink());}
+        bool operator> ( Residue& rhs)  { return (this->GetLink() > rhs.GetLink());}
+        bool operator< ( Residue& rhs)  { return (this->GetLink() < rhs.GetLink());}
 	private:
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
