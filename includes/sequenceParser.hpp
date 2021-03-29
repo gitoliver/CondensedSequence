@@ -18,7 +18,9 @@ namespace CondensedSequence
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
         std::string Print();
+        Residue* FindTerminalResidue();
         std::vector<Residue*> GetParsedResidues();
+        std::vector<Residue*> GetParsedResiduesOrderedByConnectivity();
         //////////////////////////////////////////////////////////
         //                       MUTATOR                        //
         //////////////////////////////////////////////////////////

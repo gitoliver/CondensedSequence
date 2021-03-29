@@ -6,6 +6,7 @@
 
 using CondensedSequence::SequenceParser;
 using CondensedSequence::Residue;
+using TemplateGraph::Graph;
 
 SequenceParser::SequenceParser (std::string inputSequence)
 {
@@ -28,6 +29,17 @@ std::string SequenceParser::Print()
     return sequenceGraph.Print();
 }
 
+Residue* SequenceParser::FindTerminalResidue()
+{
+    for (auto &residue : this->GetParsedResidues())
+    {
+        if (residue->GetType() == Residue::Type::Terminal)
+        {
+            return residue;       
+        }
+    }
+    //throw
+}
 
 std::vector<Residue*> SequenceParser::GetParsedResidues()
 {
@@ -38,6 +50,19 @@ std::vector<Residue*> SequenceParser::GetParsedResidues()
     }
     return rawResidues;
 }
+
+std::vector<Residue*> SequenceParser::GetParsedResiduesOrderedByConnectivity()
+{
+    std::vector<Residue*> rawResidues;
+    // Go via Graph so order decided by connectivity, depth first traversal:
+    TemplateGraph::Graph<Residue> sequenceGraph(this->FindTerminalResidue()->GetNode());
+    for(auto &node : sequenceGraph.GetNodes())
+    {
+        rawResidues.push_back(node->GetObjectPtr());
+    }
+    return rawResidues;
+}
+
 
 void SequenceParser::TokenizeLabelledInput(std::string inString)
 {
