@@ -2,6 +2,9 @@
 #define SEQUENCE_MANAGER_HPP
 
 #include "sequenceParser.hpp"
+#include "Graph.hpp"
+
+using TemplateGraph::Graph;
 
 namespace CondensedSequence
 {
@@ -11,18 +14,21 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                       CONSTRUCTOR                    //
         //////////////////////////////////////////////////////////
-        SequenceManager(std::string inputSequence) : SequenceParser{inputSequence} {parsedResidues_ = this->GetParsedResidues();}
+        SequenceManager(std::string inputSequence) : SequenceParser{inputSequence} {this->SetTerminal(this->FindTerminalResidue());}
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
+        inline Residue* GetTerminal() {return terminalResidue_;}
         //////////////////////////////////////////////////////////
         //                       MUTATOR                        //
         //////////////////////////////////////////////////////////
+        inline void SetTerminal(Residue* terminal) {terminalResidue_ = terminal;}
         //////////////////////////////////////////////////////////
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
-        void reorderSequence();
-        // void labelSequence();
+        void ReorderSequence();
+        void LabelSequence();
+        void PrintLabelledSequence();
     private:
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
@@ -33,10 +39,11 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
+        // inline void InitializeGraph() {graph_.SetRoot(this->GetTerminal()->GetNode());}
         //////////////////////////////////////////////////////////
         //                 PRIVATE MEMBERS                      //
         //////////////////////////////////////////////////////////
-        std::vector<Residue*> parsedResidues_;
+        Residue* terminalResidue_;
     };
 }
 #endif
