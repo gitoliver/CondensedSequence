@@ -16,7 +16,7 @@ void Residue::AddLinkage(Residue* otherRes)
 {
     //std::string label = this->GetName() + "->" + otherRes->GetName();
     //std::cout << "Adding Edge: " << label << std::endl;
-    this->GetNode()->AddEdge(otherRes->GetNode(), this->GetName() + "->" + otherRes->GetName());
+    this->GetNode()->AddEdge(otherRes->GetNode(), this->GetConfiguration() + this->GetLinkageLabel());
    // std::cout << "Is it getting destroyed now?\n";
 }
 
@@ -40,6 +40,10 @@ std::vector<Residue*> Residue::GetChildren()
     return this->GetNode()->GetIncomingNeighborObjects();
 }
 
+std::string Residue::GetName()
+{
+    return (this->GetIsomer() + this->GetResidueName() + this->GetRingType() + this->GetSpecialModifier());
+}
 
 void Residue::ParseResidueStringIntoComponents(std::string residueString)
 {

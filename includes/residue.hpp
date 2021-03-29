@@ -20,7 +20,8 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
-        inline std::string GetName() {return fullResidueString_;}
+        std::string GetName();
+        inline std::string GetInputString() {return fullResidueString_;}
         inline TemplateGraph::Node<Residue>* GetNode() {return &node_;}
         void Print();
         inline char GetIsomer() {return isomer_;}
