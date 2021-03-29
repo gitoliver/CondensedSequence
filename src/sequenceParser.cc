@@ -38,7 +38,8 @@ Residue* SequenceParser::FindTerminalResidue()
             return residue;       
         }
     }
-    //throw
+    //throw would be better
+    return this->GetParsedResidues().at(0);
 }
 
 std::vector<Residue*> SequenceParser::GetParsedResidues()
