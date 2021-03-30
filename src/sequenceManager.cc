@@ -2,7 +2,7 @@
 #include "sequenceManager.hpp"
 
 using CondensedSequence::SequenceManager;
-using CondensedSequence::Residue;
+using CondensedSequence::ParsedResidue;
 
 
 void SequenceManager::ReorderSequence()
@@ -50,7 +50,7 @@ void SequenceManager::PrintLabelledSequence()
 	auto glycamLabelSignature = "&Label=";
 	for (auto &residue : this->GetParsedResidues())
 	{
-		if (residue->GetType() == Residue::Type::Terminal)
+		if (residue->GetType() == ParsedResidue::Type::Terminal)
 		{ // Terminal doesn't have linkage, so next for loop doesn't trigger for it.
 			labelsToPrint.push_back(residue->GetNode()->FindLabelContaining(glycamLabelSignature));
 		}

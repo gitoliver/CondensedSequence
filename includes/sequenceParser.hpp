@@ -2,7 +2,7 @@
 #define SEQUENCE_PARSER_HPP
 
 #include <string>
-#include "residue.hpp"
+#include "parsedResidue.hpp"
 // using namespace TemplateGraph;
 
 namespace CondensedSequence
@@ -18,9 +18,9 @@ namespace CondensedSequence
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
         std::string Print();
-        Residue* FindTerminalResidue();
-        std::vector<Residue*> GetParsedResidues();
-        std::vector<Residue*> GetParsedResiduesOrderedByConnectivity();
+        ParsedResidue* FindTerminalResidue();
+        std::vector<ParsedResidue*> GetParsedResidues();
+        std::vector<ParsedResidue*> GetParsedResiduesOrderedByConnectivity();
         //////////////////////////////////////////////////////////
         //                       MUTATOR                        //
         //////////////////////////////////////////////////////////
@@ -39,14 +39,14 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         void TokenizeLabelledInput(std::string inString);
         bool ParseCondensedSequence(std::string inString);
-        void RecurveParse(size_t &currentIndex, std::string sequence, Residue* parent);
-        Residue* SaveResidue(const size_t windowStart, const size_t windowEnd, const std::string sequence, Residue* parent);
+        void RecurveParse(size_t &currentIndex, std::string sequence, ParsedResidue* parent);
+        ParsedResidue* SaveResidue(const size_t windowStart, const size_t windowEnd, const std::string sequence, ParsedResidue* parent);
         inline void SaveDerivative(std::string derivative) {savedDerivatives_.push_back(derivative);}
         //////////////////////////////////////////////////////////
         //                 PRIVATE MEMBERS                      //
         //////////////////////////////////////////////////////////
     	std::vector<std::string> savedDerivatives_;
-        std::vector<std::unique_ptr<Residue>> residues_;
+        std::vector<std::unique_ptr<ParsedResidue>> parsedResidues_;
     };
 }
 #endif

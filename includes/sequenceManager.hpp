@@ -18,11 +18,11 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
-        inline Residue* GetTerminal() {return terminalResidue_;}
+        inline ParsedResidue* GetTerminal() {return terminalResidue_;}
         //////////////////////////////////////////////////////////
         //                       MUTATOR                        //
         //////////////////////////////////////////////////////////
-        inline void SetTerminal(Residue* terminal) {terminalResidue_ = terminal;}
+        inline void SetTerminal(ParsedResidue* terminal) {terminalResidue_ = terminal;}
         //////////////////////////////////////////////////////////
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
@@ -43,7 +43,7 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                 PRIVATE MEMBERS                      //
         //////////////////////////////////////////////////////////
-        Residue* terminalResidue_;
+        ParsedResidue* terminalResidue_;
     };
 }
 #endif

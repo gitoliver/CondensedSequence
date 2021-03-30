@@ -1,18 +1,18 @@
-#include "residue.hpp"
+#include "parsedResidue.hpp"
 
-using CondensedSequence::Residue;
+using CondensedSequence::ParsedResidue;
 
-Residue::Residue(std::string residueString) 
+ParsedResidue::ParsedResidue(std::string residueString) 
 : fullResidueString_ (residueString), node_ (this, residueString) {this->ParseResidueStringIntoComponents(residueString);}
 
-Residue::Residue(std::string residueString, Residue* neighbor) 
+ParsedResidue::ParsedResidue(std::string residueString, ParsedResidue* neighbor) 
 : fullResidueString_ (residueString), node_ (this, residueString)
 {
 	this->ParseResidueStringIntoComponents(residueString);
 	this->AddLinkage(neighbor);
 }
 
-void Residue::AddLinkage(Residue* otherRes) 
+void ParsedResidue::AddLinkage(ParsedResidue* otherRes) 
 {
     //std::string label = this->GetName() + "->" + otherRes->GetName();
     //std::cout << "Adding Edge: " << label << std::endl;
@@ -20,7 +20,7 @@ void Residue::AddLinkage(Residue* otherRes)
    // std::cout << "Is it getting destroyed now?\n";
 }
 
-char Residue::GetLink()
+char ParsedResidue::GetLink()
 {
     switch (this->GetType())
     {
@@ -35,17 +35,17 @@ char Residue::GetLink()
     }
 }
 
-std::vector<Residue*> Residue::GetChildren()
+std::vector<ParsedResidue*> ParsedResidue::GetChildren()
 {
     return this->GetNode()->GetIncomingNeighborObjects();
 }
 
-std::string Residue::GetName()
+std::string ParsedResidue::GetName()
 {
     return (this->GetIsomer() + this->GetResidueName() + this->GetRingType() + this->GetSpecialModifier());
 }
 
-void Residue::ParseResidueStringIntoComponents(std::string residueString)
+void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString)
 {
 	//std::cout << "PARSING RESIDUE: " << residueString << std::endl;
 	if (residueString.find('-') != std::string::npos)
@@ -82,7 +82,7 @@ void Residue::ParseResidueStringIntoComponents(std::string residueString)
     //this->Print();
 }
 
-void Residue::Print()
+void ParsedResidue::Print()
 {
 	std::cout 	<< this->GetIsomer() << "_" 
 				<< this->GetResidueName() << "_"

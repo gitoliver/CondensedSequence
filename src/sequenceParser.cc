@@ -5,7 +5,7 @@
 #include <Graph.hpp> // For Print.
 
 using CondensedSequence::SequenceParser;
-using CondensedSequence::Residue;
+using CondensedSequence::ParsedResidue;
 using TemplateGraph::Graph;
 
 SequenceParser::SequenceParser (std::string inputSequence)
@@ -25,15 +25,15 @@ SequenceParser::SequenceParser (std::string inputSequence)
 
 std::string SequenceParser::Print()
 {
-    TemplateGraph::Graph<Residue> sequenceGraph(this->GetParsedResidues().at(0)->GetNode());
+    TemplateGraph::Graph<ParsedResidue> sequenceGraph(this->GetParsedResidues().at(0)->GetNode());
     return sequenceGraph.Print();
 }
 
-Residue* SequenceParser::FindTerminalResidue()
+ParsedResidue* SequenceParser::FindTerminalResidue()
 {
     for (auto &residue : this->GetParsedResidues())
     {
-        if (residue->GetType() == Residue::Type::Terminal)
+        if (residue->GetType() == ParsedResidue::Type::Terminal)
         {
             return residue;       
         }
@@ -42,21 +42,21 @@ Residue* SequenceParser::FindTerminalResidue()
     return this->GetParsedResidues().at(0);
 }
 
-std::vector<Residue*> SequenceParser::GetParsedResidues()
+std::vector<ParsedResidue*> SequenceParser::GetParsedResidues()
 {
-    std::vector<Residue*> rawResidues;
-    for(auto &residue : residues_)
+    std::vector<ParsedResidue*> rawResidues;
+    for(auto &residue : parsedResidues_)
     {
         rawResidues.push_back(residue.get());
     }
     return rawResidues;
 }
 
-std::vector<Residue*> SequenceParser::GetParsedResiduesOrderedByConnectivity()
+std::vector<ParsedResidue*> SequenceParser::GetParsedResiduesOrderedByConnectivity()
 {
-    std::vector<Residue*> rawResidues;
+    std::vector<ParsedResidue*> rawResidues;
     // Go via Graph so order decided by connectivity, depth first traversal:
-    TemplateGraph::Graph<Residue> sequenceGraph(this->FindTerminalResidue()->GetNode());
+    TemplateGraph::Graph<ParsedResidue> sequenceGraph(this->FindTerminalResidue()->GetNode());
     for(auto &node : sequenceGraph.GetNodes())
     {
         rawResidues.push_back(node->GetObjectPtr());
@@ -87,9 +87,9 @@ bool SequenceParser::ParseCondensedSequence(const std::string sequence)
 	size_t last_dash_index = sequence.find_last_of('-');
 	std::string terminal_residue = sequence.substr((last_dash_index + 1)); // From last dash to end.
     std::cout << "Terminal is: " << terminal_residue << "\n";
-    residues_.push_back(std::make_unique<Residue>(terminal_residue));
-    auto terminal = residues_.back().get();
-    //this->SetCurrentParentResidue(residues_.back());
+    parsedResidues_.push_back(std::make_unique<ParsedResidue>(terminal_residue));
+    auto terminal = parsedResidues_.back().get();
+    //this->SetCurrentParentResidue(parsedResidues_.back());
     //std::cout << "And that was: " << this->GetCurrentParentResidue()->GetName() << std::endl;
     //std::cout << "And that was: " << terminal->GetName() << std::endl;
     size_t i = (last_dash_index + 1);        
@@ -97,7 +97,7 @@ bool SequenceParser::ParseCondensedSequence(const std::string sequence)
     return true;
 }
 
-void SequenceParser::RecurveParse(size_t &i, const std::string sequence, Residue* parent)
+void SequenceParser::RecurveParse(size_t &i, const std::string sequence, ParsedResidue* parent)
 {
     bool branchStart = true;
     size_t windowEnd = i;
@@ -151,7 +151,7 @@ void SequenceParser::RecurveParse(size_t &i, const std::string sequence, Residue
     return; 
 }
 
-Residue* SequenceParser::SaveResidue(const size_t windowStart, const size_t windowEnd, const std::string sequence, Residue* parent)
+ParsedResidue* SequenceParser::SaveResidue(const size_t windowStart, const size_t windowEnd, const std::string sequence, ParsedResidue* parent)
 {
     std::string residueString = sequence.substr(windowStart, (windowEnd - windowStart));
     //std::cout << "At start of save: " << residueString << std::endl;
@@ -168,14 +168,14 @@ Residue* SequenceParser::SaveResidue(const size_t windowStart, const size_t wind
     if (residueString.find('-') != std::string::npos)
     {
         std::cout << "Saving " << residueString << " with parent " << parent->GetName() <<  std::endl;
-        residues_.push_back(std::make_unique<Residue>(residueString, parent));
-        auto newRes = residues_.back().get();
+        parsedResidues_.push_back(std::make_unique<ParsedResidue>(residueString, parent));
+        auto newRes = parsedResidues_.back().get();
         if(this->DerivativesExist())
         {
             for(auto &derivative : this->ExtractDerivatives())
             {
                 std::cout << "Saving " << derivative << " with parent " << newRes->GetName() <<  std::endl;
-                residues_.push_back(std::make_unique<Residue>(derivative, newRes));
+                parsedResidues_.push_back(std::make_unique<ParsedResidue>(derivative, newRes));
             }
         }
         return newRes;

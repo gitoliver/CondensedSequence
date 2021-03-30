@@ -1,5 +1,5 @@
-#ifndef SEQUENCE_RESIDUE_HPP
-#define SEQUENCE_RESIDUE_HPP
+#ifndef PARSED_RESIDUE_HPP
+#define PARSED_RESIDUE_HPP
 
 #include <string>
 #include <Node.hpp> // TemplateGraph
@@ -7,46 +7,46 @@
 
 namespace CondensedSequence
 {
-	class Residue
+	class ParsedResidue
 	{
 	public:
         enum Type {Terminal, Sugar, Derivative};
         //////////////////////////////////////////////////////////
         //                       CONSTRUCTOR                    //
         //////////////////////////////////////////////////////////
-        Residue(std::string residueString);
-        Residue(std::string residueString, Residue* neighbor);
+        ParsedResidue(std::string residueString);
+        ParsedResidue(std::string residueString, ParsedResidue* neighbor);
         //~Residue() {std::cout << "Residue destroyed\n";}
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
         std::string GetName();
         inline std::string GetInputString() {return fullResidueString_;}
-        inline TemplateGraph::Node<Residue>* GetNode() {return &node_;}
-        void Print();
+        inline TemplateGraph::Node<ParsedResidue>* GetNode() {return &node_;}
         inline char GetIsomer() {return isomer_;}
         inline std::string GetResidueName() {return residueName_;}
         inline char GetRingType() {return ringType_;}
         inline std::string GetSpecialModifier() {return specialModifier_;}
         inline char GetConfiguration() {return configuration_;}
         inline std::string GetLinkageLabel() {return linkageLabel_;}
-        inline Residue::Type GetType() {return type_;}
+        inline ParsedResidue::Type GetType() {return type_;}
         //////////////////////////////////////////////////////////
         //                       MUTATOR                        //
         //////////////////////////////////////////////////////////
-    	void AddLinkage(Residue* otherRes);
+    	void AddLinkage(ParsedResidue* otherRes);
         //////////////////////////////////////////////////////////
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
         char GetLink();
-        std::vector<Residue*> GetChildren();
+        std::vector<ParsedResidue*> GetChildren();
+        void Print();
         //////////////////////////////////////////////////////////
         //                  OPERATOR OVERLOADING                //
         //////////////////////////////////////////////////////////
-        bool operator== ( Residue& rhs)  { return (this->GetLink() == rhs.GetLink());}
-        bool operator!= ( Residue& rhs)  { return (this->GetLink() != rhs.GetLink());}
-        bool operator> ( Residue& rhs)  { return (this->GetLink() > rhs.GetLink());}
-        bool operator< ( Residue& rhs)  { return (this->GetLink() < rhs.GetLink());}
+        bool operator== ( ParsedResidue& rhs)  { return (this->GetLink() == rhs.GetLink());}
+        bool operator!= ( ParsedResidue& rhs)  { return (this->GetLink() != rhs.GetLink());}
+        bool operator> ( ParsedResidue& rhs)  { return (this->GetLink() > rhs.GetLink());}
+        bool operator< ( ParsedResidue& rhs)  { return (this->GetLink() < rhs.GetLink());}
 	private:
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
@@ -65,11 +65,11 @@ namespace CondensedSequence
         inline void SetSpecialModifier(std::string modifier) {specialModifier_ = modifier;}
         inline void SetConfiguration(char config) {configuration_ = config;}
         inline void SetLinkageLabel(std::string label) {linkageLabel_ = label;}
-        inline void SetType(Residue::Type type) {type_ = type;}
+        inline void SetType(ParsedResidue::Type type) {type_ = type;}
         //////////////////////////////////////////////////////////
         //                       ATTRRIBUTES                    //
         //////////////////////////////////////////////////////////
-        Residue::Type type_;                 //         enum Type {Terminal, Sugar, Derivative};
+        ParsedResidue::Type type_;                 //         enum Type {Terminal, Sugar, Derivative};
 		std::string fullResidueString_;           // DManpNAca1-4.
 		char isomer_;                      // D or L
         std::string residueName_;                 // Man, Neu, Ido etc
@@ -77,7 +77,7 @@ namespace CondensedSequence
         std::string specialModifier_;             // NAc, Gc, A (IdoA)
     	char configuration_;               // a or b
         std::string linkageLabel_;                // 1-4, 2-6, 1- (when connected to OH)
-        TemplateGraph::Node<Residue> node_;         
+        TemplateGraph::Node<ParsedResidue> node_;         
 	};
 }
 #endif
